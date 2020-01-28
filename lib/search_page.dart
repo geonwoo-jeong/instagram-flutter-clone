@@ -24,7 +24,7 @@ class _SearchPageState extends State<SearchPage> {
           crossAxisCount: 3,
           childAspectRatio: 1.0,
           mainAxisSpacing: 1.0,
-g          crossAxisSpacing: 1.0
+          crossAxisSpacing: 1.0
         ),
       itemCount: 5,
       itemBuilder: (context, index) {
