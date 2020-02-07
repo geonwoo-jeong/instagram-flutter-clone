@@ -1,6 +1,11 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 class HomePage extends StatelessWidget {
+  final FirebaseUser user;
+
+  HomePage(this.user);
+
   List _images = [
    'https://images.pexels.com/photos/414612/pexels-photo-414612.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500',
     'https://as.ftcdn.net/r/v1/pics/7b11b8176a3611dbfb25406156a6ef50cd3a5009/home/discover_collections/optimized/image-2019-10-11-11-36-27-681.jpg',
@@ -61,21 +66,19 @@ class HomePage extends StatelessWidget {
                             width: 80.0,
                             height: 80.0,
                             child: CircleAvatar(
-                              backgroundImage: NetworkImage(
-                                'https://scontent-nrt1-1.cdninstagram.com/v/t51.2885-19/s150x150/29415092_1812078209088259_921844438651633664_n.jpg?_nc_ht=scontent-nrt1-1.cdninstagram.com&_nc_ohc=UL85fwGzI2sAX9v48p0&oh=5045b0428c2fde0c19be7f1c1d85e923&oe=5EB5D107'
-                              ),
+                              backgroundImage: NetworkImage(user.photoUrl),
                             )
                           ),
                           Padding(
                             padding: EdgeInsets.all(8.0)
                           ),
                           Text(
-                            'geonwoo.jeong@gmail.com',
+                            user.email,
                             style: TextStyle(
                               fontWeight: FontWeight.bold
                             )
                           ),
-                          Text('Geonwoo Jeong'),
+                          Text(user.displayName),
                           Padding(
                             padding: EdgeInsets.all(8.0)
                           ),
