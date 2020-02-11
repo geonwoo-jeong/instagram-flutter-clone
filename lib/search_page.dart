@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:instagram_flutter_clone/create_page.dart';
@@ -33,23 +34,36 @@ class _SearchPageState extends State<SearchPage> {
   }
 
   Widget _buildBody() {
-    return GridView.builder(
-        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-          crossAxisCount: 3,
-          childAspectRatio: 1.0,
-          mainAxisSpacing: 1.0,
-          crossAxisSpacing: 1.0
-        ),
-      itemCount: 5,
-      itemBuilder: (context, index) {
-        return _buildListItem(context, index);
-      }
+    return StreamBuilder(
+      stream: Firestore.instance.collection('post').snapshots(),
+      builder: (BuildContext context, AsyncSnapshot snapshot) {
+        if (!snapshot.hasData) {
+          return Center(
+            child: CircularProgressIndicator()
+          );
+        }
+
+        var items = snapshot.data?.documents ?? [];
+
+        return GridView.builder(
+            gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                crossAxisCount: 3,
+                childAspectRatio: 1.0,
+                mainAxisSpacing: 1.0,
+                crossAxisSpacing: 1.0
+            ),
+            itemCount: items.length,
+            itemBuilder: (context, index) {
+              return _buildListItem(context, items[index]);
+            }
+        );
+      },
     );
   }
 
-  Widget _buildListItem(BuildContext context, int index) {
+  Widget _buildListItem(context, document) {
     return Image.network(
-      'https://scontent-nrt1-1.cdninstagram.com/v/t51.2885-19/s150x150/29415092_1812078209088259_921844438651633664_n.jpg?_nc_ht=scontent-nrt1-1.cdninstagram.com&_nc_ohc=UL85fwGzI2sAX9v48p0&oh=5045b0428c2fde0c19be7f1c1d85e923&oe=5EB5D107',
+      document['photoUrl'],
       fit: BoxFit.cover,
     );
   }
